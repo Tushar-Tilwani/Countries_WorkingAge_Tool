@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>D3 World Map</title>
+<link rel="icon" type="image/x-icon" href="icon.ico" />
 <style>
 body { 
   color: #666; 
@@ -48,52 +49,69 @@ div.tooltip {
   fill-opacity: .8;
   stroke: #fff;
 }
+
 #selectedCountriesDiv
 {
   display: block;
+  height: 550px;
+  margin: 20px 0px;
+  width: 565px;
   float: left;
-  height:550px;
-  margin: 0 20px;
+  clear: both;
 }
 #selectedCountries {
   font-size: 24px;
   width: 220px;
-
-}
-#selectedCountries option {
+  float: left;
 
 }
 
 a {
   font-size: 14px;
   margin: 5px;
+  float: left;
+  display: block;
 }
 
-#showGraph {
-font-size: 30px;
-background-color: steelblue;
-padding: 20px;
-text-decoration: none;
-font-style: italic;
-display: block;
-margin-top: 20px;
-color: white;
-
+.left {
+  float: left;
+  width: 49%;
 }
 
-#showGraph:hover {
+.right {
+  float: right;
+  width: 49%;
+}
+
+.right a {
+  font-size: 2em;
+  background-color: steelblue;
+  padding: 10px;
+  text-decoration: none;
+  font-style: italic;
+  color: white;
+  text-align: center;
+  width: 300px;
+}
+
+#showGraph:hover, #worldGraph:hover {
   background-color: green;
 }
 
 </style>
 <body>
-  <h1>BRICS and US Age dependency ratio (% of working-age population)</h1>
+  <h1>Select one or more country and check their Age dependency ratio (% of working-age population)</h1>
   <div id="map"></div>
   <div id="selectedCountriesDiv">
-    <select name="selectedCountries" multiple disabled id ="selectedCountries">
-    </select>
-    <a href="#" onclick="clearAll()" id="clear">Clear All</a>
-     <a href="multiChart.html" id="showGraph">Show Graph</a>
+    <div class='left'>
+      <select name="selectedCountries" multiple disabled id ="selectedCountries">
+      </select>
+      <a href="#" onclick="clearAll()" id="clear">Clear All</a>
+    </div>
+    <div class="right">
+      <a href="multiChart.html" id="showGraph">Show Comparision Graph</a>
+      <a href="barGraph.html" id="worldGraph">Show World Graph</a>
+    </div>
   </div>
   <script src="js/d3.v3.min.js"></script>
   <script src="js/queue.v1.min.js"></script>
@@ -203,25 +221,24 @@ function createWorld(){
     if(localStorage.selectedCountries) {
      selectedCountries = JSON.parse(localStorage.selectedCountries);
    }
-   //var cIn = ["India","United States","China","Russian Federation","South Africa","Brazil"];
 
    if(selectedCountries.indexOf(d.name) > -1) {
     alert('Country is already selected');
     return null;
-   }
+  }
 
-   selectedCountries.push(d.name);
+  selectedCountries.push(d.name);
 
-   d3.select("#selectedCountries")
-   .append("option")
-   .attr("value", d.name)
-   .html(d.name);
+  d3.select("#selectedCountries")
+  .append("option")
+  .attr("value", d.name)
+  .html(d.name);
 
-   localStorage.selectedCountries = JSON.stringify(selectedCountries);
+  localStorage.selectedCountries = JSON.stringify(selectedCountries);
 
- }
+}
 
- function clearAll() {
+function clearAll() {
   localStorage.selectedCountries = JSON.stringify([]);
   d3.select("#selectedCountries").html('');
 }
